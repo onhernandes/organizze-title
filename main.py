@@ -3,6 +3,8 @@ from transactions import Transaction
 import organizze
 import re
 
+connect('organizze-title-indexer', port=27016)
+
 def check_old_title(title, notes):
     old_title = re.search(r"OLD_TITLE=(.*)", notes)
     old_title = old_title.group() if old_title else False
@@ -13,15 +15,15 @@ def check_old_title(title, notes):
     return Transaction(title=old_title, new_title=title).save()
 
 def check(id, title, notes):
-    if "OLD_TITLE=" in notes:
+    if notes is not None and "OLD_TITLE=" in notes:
         return check_old_title(title, notes)
 
-    t = Transaction.objects(title=title)
+    t = Transaction.objects(title=title).first()
 
-    if len(t) == 0:
+    if not t:
         return None
 
-    new_title = t[0]["new_title"]
+    new_title = t[0].new_title
     return organizze.update_transaction(id, { "title": new_title })
 
 def main():
@@ -31,5 +33,5 @@ def main():
         check(t["id"], t["description"], t["notes"])
 
 if __name__ == "__main__":
-    main()
+    print(main())
 
