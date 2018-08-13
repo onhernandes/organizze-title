@@ -16,14 +16,17 @@ def check_old_title(title, notes):
 
 def check(id, title, notes):
     if notes is not None and "OLD_TITLE=" in notes:
+        print("Registering a new item...\n")
         return check_old_title(title, notes)
 
     t = Transaction.objects(title=title).first()
 
     if not t:
+        print("Item not found in db...\n")
         return None
 
     new_title = t[0].new_title
+    print("Updating transaction...\n")
     return organizze.update_transaction(id, { "title": new_title })
 
 def main():
