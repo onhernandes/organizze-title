@@ -6,8 +6,8 @@ import re
 connect('organizze-title-indexer', port=27016)
 
 def check_old_title(title, notes):
-    old_title = re.search(r"OLD_TITLE=(.*)", notes)
-    old_title = old_title.group() if old_title else False
+    old_title = re.match(r"OLD_TITLE=(.*)", notes)
+    old_title = old_title.group().replace("OLD_TITLE=", "") if old_title else False
 
     if not old_title:
         return None
