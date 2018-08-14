@@ -2,8 +2,9 @@ from mongoengine import *
 from transactions import Transaction
 import organizze
 import re
+import os
 
-connect('organizze-title-indexer', port=27016)
+connect('organizze-title-indexer', port=int(os.environ.get("MONGODB_PORT", 27016)), host=os.environ.get("MONGODB_HOST", "127.0.0.1"))
 
 def check_old_title(title, notes):
     old_title = re.match(r"OLD_TITLE=(.*)", notes)
