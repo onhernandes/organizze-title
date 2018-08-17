@@ -8,5 +8,5 @@ class Category(Document):
 class Transaction(Document):
     title = StringField()
     new_title = StringField()
-    category = LazyReferenceField(Category)
+    category = IntField()
 

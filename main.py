@@ -19,7 +19,10 @@ def check_old_title(title, notes, category):
         return None
 
     print("Registering a new item...")
-    return Transaction(title=old_title, new_title=title, category_id=category).save()
+    if category is not None:
+        return Transaction(title=old_title, new_title=title, category=category).save()
+
+    return Transaction(title=old_title, new_title=title).save()
 
 def check(id, title, notes, category):
     t = Transaction.objects(title=title).first()
@@ -27,12 +30,12 @@ def check(id, title, notes, category):
     if t is None:
         return check_old_title(title, notes, category)
 
-    print("Updating transaction \"%s\" to \"%s\"..." % (title, new_title))
     new_title = t["new_title"]
+    print("Updating transaction \"%s\" to \"%s\"..." % (title, new_title))
     body = { "description": new_title }
 
-    if t["category_id"] is not None and category is not None:
-        body["category_id"] = t["category_id"]
+    if t["category"] is not None and category is not None:
+        body["category_id"] = t["category"]
 
     organizze.update_transaction(id, body)
 
@@ -41,7 +44,7 @@ def category_insert(cat):
 
 def main():
     categories = organizze.list_categories()
-    map(category_insert, categories)
+    res = map(category_insert, categories)
 
     transactions = organizze.list_transactions()
 
