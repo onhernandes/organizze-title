@@ -24,3 +24,11 @@ def update_transaction(id, body):
     r = requests.put(f"{API_BASE_URL}/transactions/{id}", data=body, headers=headers, auth=auth)
     return r.json()
 
+def list_categories():
+    """
+    List Organizze's categories
+
+    """
+    r = requests.get(f"{API_BASE_URL}/categories", headers=headers, auth=auth)
+    return r.json()
+

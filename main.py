@@ -1,12 +1,12 @@
 from mongoengine import *
-from transactions import Transaction
+from transactions import *
 import organizze
 import re
 import os
 
 connect('organizze-title-indexer', port=int(os.environ.get("MONGODB_PORT", 27016)), host=os.environ.get("MONGODB_HOST", "127.0.0.1"))
 
-def check_old_title(title, notes):
+def check_old_title(title, notes, category):
     if notes is None:
         return None
 
@@ -18,26 +18,37 @@ def check_old_title(title, notes):
     if old_title is False or t:
         return None
 
-    print("Registering a new item...\n")
-    return Transaction(title=old_title, new_title=title).save()
+    print("Registering a new item...")
+    return Transaction(title=old_title, new_title=title, category_id=category).save()
 
-def check(id, title, notes):
+def check(id, title, notes, category):
     t = Transaction.objects(title=title).first()
 
     if t is None:
-        return check_old_title(title, notes)
+        return check_old_title(title, notes, category)
 
+    print("Updating transaction \"%s\" to \"%s\"..." % (title, new_title))
     new_title = t["new_title"]
-    print("Updating transaction \"%s\" to \"%s\"...\n" % (title, new_title))
-    res = organizze.update_transaction(id, { "description": new_title })
-    print(res)
-    return res
+    body = { "description": new_title }
+
+    if t["category_id"] is not None and category is not None:
+        body["category_id"] = t["category_id"]
+
+    organizze.update_transaction(id, body)
+
+def category_insert(cat):
+    return Category.objects(id=int(cat["id"])).update_one(set__name=cat["name"], set__parent_id=cat["parent_id"], upsert=True)
 
 def main():
+    categories = organizze.list_categories()
+    map(category_insert, categories)
+
     transactions = organizze.list_transactions()
 
     for t in transactions:
-        check(t["id"], t["description"], t["notes"])
+        check(t["id"], t["description"], t["notes"], t["category_id"])
+
+    return "Done!"
 
 if __name__ == "__main__":
     print(main())
