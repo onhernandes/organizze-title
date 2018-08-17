@@ -45,6 +45,7 @@ def category_insert(cat):
 def main():
     categories = organizze.list_categories()
     res = map(category_insert, categories)
+    return res
 
     transactions = organizze.list_transactions()
 
