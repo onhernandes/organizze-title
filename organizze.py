@@ -1,5 +1,5 @@
 import requests
-import os
+import config
 
 API_BASE_URL = "https://api.organizze.com.br/rest/v2"
 headers = { \
@@ -7,7 +7,7 @@ headers = { \
 }
 
 # https://app.organizze.com.br/configuracoes/api-keys
-auth = (os.environ.get("USERNAME"), os.environ.get("TOKEN")) 
+auth = (config.get("USERNAME"), config.get("TOKEN")) 
 
 def list_transactions():
     """

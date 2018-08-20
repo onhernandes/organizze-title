@@ -3,8 +3,11 @@ from transactions import *
 import organizze
 import re
 import os
+import config
 
-connect('organizze-title-indexer', port=int(os.environ.get("MONGODB_PORT", 27016)), host=os.environ.get("MONGODB_HOST", "127.0.0.1"))
+config.ensure()
+
+connect('organizze-title-indexer')
 
 def check_old_title(title, notes, category):
     if notes is None:
