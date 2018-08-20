@@ -14,14 +14,14 @@ def list_transactions():
     List Organizze's transactions
 
     """
-    r = requests.get(f"{API_BASE_URL}/transactions", headers=headers, auth=auth)
+    r = requests.get("%s/transactions" % (API_BASE_URL), headers=headers, auth=auth)
     return r.json()
 
 def update_transaction(id, body):
     """
     Update a transaction
     """
-    r = requests.put(f"{API_BASE_URL}/transactions/{id}", data=body, headers=headers, auth=auth)
+    r = requests.put("%s/transactions/%s" % (API_BASE_URL, id), data=body, headers=headers, auth=auth)
     return r.json()
 
 def list_categories():
@@ -29,6 +29,6 @@ def list_categories():
     List Organizze's categories
 
     """
-    r = requests.get(f"{API_BASE_URL}/categories", headers=headers, auth=auth)
+    r = requests.get("%s/categories" % (API_BASE_URL), headers=headers, auth=auth)
     return r.json()
 
