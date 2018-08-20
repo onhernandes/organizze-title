@@ -2,7 +2,6 @@ from mongoengine import *
 from transactions import *
 import organizze
 import re
-import os
 import config
 
 config.ensure()

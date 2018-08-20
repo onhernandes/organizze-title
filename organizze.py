@@ -3,11 +3,11 @@ import config
 
 API_BASE_URL = "https://api.organizze.com.br/rest/v2"
 headers = { \
-    "user-agent": os.environ.get("USER_AGENT", "")
+    "user-agent": config.get("ORGANIZZE_USER_AGENT")
 }
 
 # https://app.organizze.com.br/configuracoes/api-keys
-auth = (config.get("USERNAME"), config.get("TOKEN")) 
+auth = (config.get("ORGANIZZE_USERNAME"), config.get("ORGANIZZE_KEY")) 
 
 def list_transactions():
     """
