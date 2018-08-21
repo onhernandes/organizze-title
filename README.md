@@ -15,6 +15,13 @@ It is useful if you have to transcript wrong and mispelled names from bank accou
 - `cd organizze-title`
 - Create a virtualenv(optional but recommended): `mkdir env && virtualenv --python=$(which python3) env && source env/bin/activate`
 - Install packages: `pip install -r requirements.txt`
-- Get a token from Organizze [https://app.organizze.com.br/configuracoes/api-keys](https://app.organizze.com.br/configuracoes/api-keys)
-- Use with: `USERNAME=<your organizze's username> TOKEN=<the token u got> USER_AGENT=<your name(email)> python main.py`
+- Set the keys
+  - You can use environment variables or set them within `config.yaml`
+  - Keys:
+    - `ORGANIZZE_USERNAME`: your Organizze's username
+    - `ORGANIZZE_KEY`: your Organizze's token, acquired [here](https://app.organizze.com.br/configuracoes/api-keys)
+    - `ORGANIZZE_USER_AGENT`: your name (your website/email) like `Matheus(https://hernandes.io)`
 
+--------
+
+License MIT
