@@ -32,24 +32,16 @@ def check(id, title, notes, category):
     if t is None:
         return check_old_title(title, notes, category)
 
+    print("Updating transaction")
     new_title = t["new_title"]
-    print("Updating transaction \"%s\" to \"%s\"..." % (title, new_title))
     body = { "description": new_title }
 
-    if t["category"] is not None and category is not None:
+    if t["category"] is not None and category is None:
         body["category_id"] = t["category"]
 
     organizze.update_transaction(id, body)
 
-def category_insert(cat):
-    return Category.objects(id=int(cat["id"])).update_one(set__name=cat["name"], set__parent_id=cat["parent_id"], upsert=True)
-
 def main():
-    categories = organizze.list_categories()
-
-    for c in categories:
-        category_insert(c)
-
     transactions = organizze.list_transactions()
 
     for t in transactions:
