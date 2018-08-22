@@ -2,10 +2,12 @@ import yaml
 import sys
 import os
 
-with open("config.yaml", "r") as f:
-    y = yaml.load(f)
+current_dir = os.path.dirname(os.path.realpath(__file__))
 
 def get(k):
+    with open(os.path.join(current_dir, "config.yaml"), "r") as f:
+        y = yaml.load(f)
+
     return os.environ.get(k, y.get(k))
 
 def ensure():
